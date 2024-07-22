@@ -1,67 +1,42 @@
+# ErrorHandlingExample Smart Contract
 
-## Contract Functions
+## Overview
+The `ErrorHandlingExample` smart contract demonstrates the usage of error handling mechanisms in Solidity. It includes three functions that utilize `require`, `assert`, and `revert` statements to handle errors and ensure the contract behaves as expected.
 
-### 1. `setValueWithRequire(uint256 _value)`
+## Prerequisites
+- Solidity ^0.8.26
+- A local Ethereum development environment (e.g., Hardhat, Truffle)
+- MetaMask or other Ethereum wallet
 
-Sets the value of the state variable `value` using a `require()` statement to ensure the input `_value` is greater than 0.
+### Interacting with the Contract
 
+#### Setting a Value with `require`
+The `setValueWithRequire` function sets the value if the provided value is greater than 10.
 ```solidity
 function setValueWithRequire(uint256 _value) public {
-    require(_value > 0, "Value must be greater than 0");
+    require(_value > 10, "Value must be greater than 10");
     value = _value;
 }
 ```
 
-- **Input**: `_value` (uint256) - The value to set.
-- **Behavior**: Reverts the transaction with the message "Value must be greater than 0" if `_value` is not greater than 0.
-
-### 2. `setValueWithAssert(uint256 _value)`
-
-Sets the value of the state variable `value` and uses an `assert()` statement to ensure the assignment was successful.
-
+#### Setting a Value with `assert`
+The `setValueWithAssert` function demonstrates the use of the `assert` statement. It intentionally introduces an error to showcase the `assert` statement's behavior.
 ```solidity
 function setValueWithAssert(uint256 _value) public {
-    value = _value;
-    assert(value == _value);
+    value = _value * 2; // intentionally introduce an error
+    assert(value == _value); // this assert should fail
 }
-```
 
-- **Input**: `_value` (uint256) - The value to set.
-- **Behavior**: Uses `assert()` to check that `value` is equal to `_value`. Reverts the transaction if the condition fails.
 
-### 3. `setValueWithRevert(uint256 _value)`
-
-Demonstrates the use of the `revert()` statement. Sets the value of `value` only if `_value` is not 0.
-
+#### Setting a Value with `revert`
+The `setValueWithRevert` function sets the value if the provided value is 5 or greater. Otherwise, it reverts with a custom error message.
 ```solidity
 function setValueWithRevert(uint256 _value) public {
-    if (_value == 0) {
-        revert("Value cannot be 0");
+    if (_value < 5) {
+        revert("Value must be 5 or greater");
     }
     value = _value;
 }
-```
 
-- **Input**: `_value` (uint256) - The value to set.
-- **Behavior**: Reverts the transaction with the message "Value cannot be 0" if `_value` is 0.
-
-### 4. `setValueWithAll(uint256 _value)`
-
-Combines the use of `require()`, `assert()`, and `revert()` statements to demonstrate their usage in a single function.
-
-```solidity
-function setValueWithAll(uint256 _value) public {
-    require(_value > 0, "Value must be greater than 0");
-    value = _value;
-    assert(value == _value);
-    if (_value == 1) {
-        revert("Value cannot be 1");
-    }
-}
-```
-
-- **Input**: `_value` (uint256) - The value to set.
-- **Behavior**: 
-  - Uses `require()` to ensure `_value` is greater than 0.
-  - Uses `assert()` to ensure `value` is set correctly.
-  - Uses `revert()` to revert the transaction if `_value` is 1
+## Author
+Arfan Mohd
