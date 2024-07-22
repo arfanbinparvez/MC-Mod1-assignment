@@ -3,21 +3,34 @@ pragma solidity ^0.8.26;
 
 contract ErrorHandlingExample {
     uint256 public value;
+    mapping(address => uint256) public balances;
+    uint256 public totalSupply;
 
-    function setValueWithRequire(uint256 _value) public {
-        require(_value > 10, "Value must be greater than 10");
-        value = _value;
+    event Mint(address indexed to, uint256 amount);
+    event Burn(address indexed from, uint256 amount);
+
+    function mint(address to, uint256 amount) public {
+        require(amount > 10, "Mint amount must be greater than 10");
+
+        balances[to] += amount;
+        totalSupply += amount; 
+
+        assert(totalSupply >= amount); // overflow check
+
+        emit Mint(to, amount);
     }
 
-    function setValueWithAssert(uint256 _value) public {
-        value = _value * 2; // intentionally introduced an error
-        assert(value == _value); // this assert should fail
-    }
+    function burn(address from, uint256 amount) public {
+        require(amount > 5, "Burn amount must be greater than 5");
 
-    function setValueWithRevert(uint256 _value) public {
-        if (_value < 5) {
-            revert("Value must be 5 or greater");
+        balances[from] -= amount;
+        totalSupply -= amount;
+
+        assert(totalSupply >= 0); // underflow check
+        if (balances[from] < 0) {
+            revert("Burn resulted in negative balance"); 
         }
-        value = _value;
+
+        emit Burn(from, amount);
     }
 }
