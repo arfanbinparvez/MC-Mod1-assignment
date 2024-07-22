@@ -4,9 +4,7 @@
 The `ErrorHandlingExample` smart contract demonstrates the usage of error handling mechanisms in Solidity. It includes three functions that utilize `require`, `assert`, and `revert` statements to handle errors and ensure the contract behaves as expected.
 
 ## Prerequisites
-- Solidity ^0.8.26
-- A local Ethereum development environment (e.g., Hardhat, Truffle)
-- MetaMask or other Ethereum wallet
+- REMIX IDE
 
 ### Interacting with the Contract
 
